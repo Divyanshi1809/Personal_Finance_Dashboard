@@ -1,14 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
+import os
 
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'ed66741fd82468a6baaa1e2c31271db5'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    # Use /tmp for Vercel serverless compatibility
+    db_path = os.path.join('/tmp', 'db.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     
     # Session configuration for auto-logout
     app.config['SESSION_COOKIE_SECURE'] = False
